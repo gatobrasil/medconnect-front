@@ -1,1 +1,21 @@
-<!-- Visualização de perfil público individual -->
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"><title>Perfil</title></head>
+<body>
+  <img id="fotoPerfil" src="" width="150" />
+  <h1 id="nome"></h1>
+  <p id="faculdade"></p>
+  <script>
+    const id = new URLSearchParams(window.location.search).get('id');
+    fetch('https://medconnect-back.onrender.com/perfil/' + id)
+      .then(res => res.json())
+      .then(dados => {
+        document.getElementById('nome').innerText = dados.nome;
+        document.getElementById('faculdade').innerText = dados.faculdade;
+        if (dados.foto) {
+          document.getElementById('fotoPerfil').src = 'https://medconnect-back.onrender.com/' + dados.foto;
+        }
+      });
+  </script>
+</body>
+</html>

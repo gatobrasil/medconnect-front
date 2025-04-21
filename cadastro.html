@@ -1,1 +1,27 @@
-<!-- Página de cadastro com foto de perfil -->
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"><title>Cadastro</title></head>
+<body>
+  <form id="cadastroForm" enctype="multipart/form-data">
+    <input type="text" name="nome" required>
+    <input type="email" name="email" required>
+    <input type="password" name="senha" required>
+    <input type="text" name="faculdade" required>
+    <input type="text" name="especialidade" required>
+    <input type="file" name="foto">
+    <button type="submit">Cadastrar</button>
+  </form>
+  <script>
+    document.getElementById('cadastroForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      const res = await fetch('https://medconnect-back.onrender.com/criarconta', {
+        method: 'POST',
+        body: formData
+      });
+      const data = await res.json();
+      alert(data.status);
+    });
+  </script>
+</body>
+</html>

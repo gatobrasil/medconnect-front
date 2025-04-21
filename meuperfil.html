@@ -1,1 +1,25 @@
-<!-- Página do perfil pessoal do estudante -->
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"><title>Meu Perfil</title></head>
+<body>
+  <h1>Meu Perfil</h1>
+  <img id="fotoPerfil" src="" width="150" />
+  <p><span id="nome"></span></p>
+  <p><span id="email"></span></p>
+  <script>
+    async function carregar() {
+      const token = localStorage.getItem('token');
+      const res = await fetch('https://medconnect-back.onrender.com/meuperfil', {
+        headers: { Authorization: token }
+      });
+      const dados = await res.json();
+      document.getElementById('nome').innerText = dados.nome;
+      document.getElementById('email').innerText = dados.email;
+      if (dados.foto) {
+        document.getElementById('fotoPerfil').src = 'https://medconnect-back.onrender.com/' + dados.foto;
+      }
+    }
+    carregar();
+  </script>
+</body>
+</html>

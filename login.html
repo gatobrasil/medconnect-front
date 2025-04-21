@@ -1,1 +1,29 @@
-<!-- Página de login do MedConnect -->
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"><title>Login</title></head>
+<body>
+  <form id="loginForm">
+    <input type="email" name="email" required>
+    <input type="password" name="senha" required>
+    <button type="submit">Entrar</button>
+  </form>
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const dados = Object.fromEntries(new FormData(e.target));
+      const res = await fetch('https://medconnect-back.onrender.com/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(dados)
+      });
+      const data = await res.json();
+      if (data.token) {
+        localStorage.setItem('token', data.token);
+        window.location.href = data.tipo === 'admin' ? 'admin.html' : 'meuperfil.html';
+      } else {
+        alert('Login inválido');
+      }
+    });
+  </script>
+</body>
+</html>

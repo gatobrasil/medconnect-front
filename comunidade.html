@@ -1,1 +1,21 @@
-<!-- Lista pública de estudantes aprovados -->
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"><title>Comunidade</title></head>
+<body>
+  <h1>Estudantes Aprovados</h1>
+  <div id="lista"></div>
+  <script>
+    async function carregar() {
+      const res = await fetch('https://medconnect-back.onrender.com/aprovados');
+      const lista = await res.json();
+      const container = document.getElementById('lista');
+      lista.forEach(user => {
+        const div = document.createElement('div');
+        div.innerHTML = `<a href='perfil.html?id=${user.id}'>${user.nome}</a>`;
+        container.appendChild(div);
+      });
+    }
+    carregar();
+  </script>
+</body>
+</html>
