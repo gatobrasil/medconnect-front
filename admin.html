@@ -1,1 +1,76 @@
 <!-- Painel de administração -->
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin - MedConnect</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      padding: 20px;
+    }
+    h2 {
+      color: #004aad;
+    }
+    .card {
+      background: white;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      margin-bottom: 10px;
+    }
+    button {
+      padding: 8px 12px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #218838;
+    }
+  </style>
+</head>
+<body>
+  <h2>Cadastros Pendentes</h2>
+  <div id="pendentes"></div>
+
+  <script>
+    async function carregarPendentes() {
+      try {
+        const res = await fetch('https://medconnect-back.onrender.com/pendentes');
+        const pendentes = await res.json();
+        const container = document.getElementById('pendentes');
+        container.innerHTML = '';
+        pendentes.forEach(p => {
+          const card = document.createElement('div');
+          card.className = 'card';
+          card.innerHTML = `
+            <p><strong>Nome:</strong> ${p.nome}</p>
+            <p><strong>Email:</strong> ${p.email}</p>
+            <p><strong>Faculdade:</strong> ${p.faculdade}</p>
+            <p><strong>Especialidade:</strong> ${p.especialidade}</p>
+            <button onclick="aprovar(${p.id})">Aprovar</button>
+          `;
+          container.appendChild(card);
+        });
+      } catch (error) {
+        console.error('Erro ao carregar cadastros pendentes:', error);
+      }
+    }
+
+    async function aprovar(id) {
+      try {
+        await fetch('https://medconnect-back.onrender.com/aprovar/' + id, { method: 'POST' });
+        carregarPendentes();
+      } catch (error) {
+        console.error('Erro ao aprovar cadastro:', error);
+      }
+    }
+
+    carregarPendentes();
+  </script>
+</body>
+</html>
